@@ -1,13 +1,11 @@
-package camt.scott2.backend.security;
+package camt.scott2.backend.security.service;
 
-import org.springframework.security.core.userdetails.User;
+import camt.scott2.backend.security.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -17,7 +15,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if ("admin".equals(username)) {
-            return new User("admin", passwordEncoder.encode("password"), new ArrayList<>());
+            return User.builder()
+                    .username("admin")
+                    .password(passwordEncoder.encode("password"))
+                    .role("ADMIN")
+                    .email("admin@example.com")
+                    .build();
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }

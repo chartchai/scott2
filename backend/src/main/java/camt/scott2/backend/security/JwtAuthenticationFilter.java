@@ -1,5 +1,6 @@
 package camt.scott2.backend.security;
 
+import camt.scott2.backend.security.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package camt.scott2.backend.security;
+package camt.scott2.backend.security.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

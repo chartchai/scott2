@@ -1,6 +1,6 @@
 package camt.scott2.backend.controller;
 
-import camt.scott2.backend.security.JwtUtil;
+import camt.scott2.backend.security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
