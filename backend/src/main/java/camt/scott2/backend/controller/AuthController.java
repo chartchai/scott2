@@ -2,14 +2,14 @@ package camt.scott2.backend.controller;
 
 import camt.scott2.backend.security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,10 +20,10 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private ReactiveAuthenticationManager authenticationManager;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private ReactiveUserDetailsService userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -32,32 +32,27 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-            );
-        } catch (BadCredentialsException e) {
-            throw new Exception("Invalid credentials", e);
-        }
-
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("token", jwt);
-        response.put("username", userDetails.getUsername());
-
-        return ResponseEntity.ok(response);
+    public Mono<Map<String, String>> login(@RequestBody LoginRequest loginRequest) {
+        return authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()))
+                .onErrorMap(BadCredentialsException.class, ex -> new RuntimeException("Invalid credentials"))
+                .then(userDetailsService.findByUsername(loginRequest.getUsername()))
+                .map(userDetails -> {
+                    String jwt = jwtUtil.generateToken(userDetails);
+                    Map<String, String> response = new HashMap<>();
+                    response.put("token", jwt);
+                    response.put("username", userDetails.getUsername());
+                    return response;
+                });
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+    public Mono<Map<String, String>> register(@RequestBody RegisterRequest registerRequest) {
         Map<String, String> response = new HashMap<>();
         response.put("message", "User registration functionality to be implemented");
         response.put("username", registerRequest.getUsername());
         
-        return ResponseEntity.ok(response);
+        return Mono.just(response);
     }
 
     public static class LoginRequest {

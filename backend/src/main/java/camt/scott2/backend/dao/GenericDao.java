@@ -1,14 +1,14 @@
 package camt.scott2.backend.dao;
 
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface GenericDao<T, ID> {
-    T save(T entity);
-    Optional<T> findById(ID id);
-    List<T> findAll();
-    void deleteById(ID id);
-    void delete(T entity);
-    boolean existsById(ID id);
-    long count();
+    Mono<T> save(T entity);
+    Mono<T> findById(ID id);
+    Flux<T> findAll();
+    Mono<Void> deleteById(ID id);
+    Mono<Void> delete(T entity);
+    Mono<Boolean> existsById(ID id);
+    Mono<Long> count();
 }

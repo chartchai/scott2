@@ -6,8 +6,8 @@ import camt.scott2.backend.repository.XlsxInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,57 +16,57 @@ public class XlsxInfoDaoImpl implements XlsxInfoDao {
     private final XlsxInfoRepository xlsxInfoRepository;
 
     @Override
-    public XlsxInfo save(XlsxInfo entity) {
+    public Mono<XlsxInfo> save(XlsxInfo entity) {
         return xlsxInfoRepository.save(entity);
     }
 
     @Override
-    public Optional<XlsxInfo> findById(String id) {
+    public Mono<XlsxInfo> findById(String id) {
         return xlsxInfoRepository.findById(id);
     }
 
     @Override
-    public List<XlsxInfo> findAll() {
+    public Flux<XlsxInfo> findAll() {
         return xlsxInfoRepository.findAll();
     }
 
     @Override
-    public void deleteById(String id) {
-        xlsxInfoRepository.deleteById(id);
+    public Mono<Void> deleteById(String id) {
+        return xlsxInfoRepository.deleteById(id);
     }
 
     @Override
-    public void delete(XlsxInfo entity) {
-        xlsxInfoRepository.delete(entity);
+    public Mono<Void> delete(XlsxInfo entity) {
+        return xlsxInfoRepository.delete(entity);
     }
 
     @Override
-    public boolean existsById(String id) {
+    public Mono<Boolean> existsById(String id) {
         return xlsxInfoRepository.existsById(id);
     }
 
     @Override
-    public long count() {
+    public Mono<Long> count() {
         return xlsxInfoRepository.count();
     }
 
     @Override
-    public List<XlsxInfo> findByCourseId(String courseId) {
+    public Flux<XlsxInfo> findByCourseId(String courseId) {
         return xlsxInfoRepository.findByCourseId(courseId);
     }
 
     @Override
-    public List<XlsxInfo> findByYearAndSemester(int year, int semester) {
+    public Flux<XlsxInfo> findByYearAndSemester(int year, int semester) {
         return xlsxInfoRepository.findByYearAndSemester(year, semester);
     }
 
     @Override
-    public List<XlsxInfo> findByEmail(String email) {
+    public Flux<XlsxInfo> findByEmail(String email) {
         return xlsxInfoRepository.findByEmail(email);
     }
 
     @Override
-    public List<XlsxInfo> findByFilename(String filename) {
+    public Flux<XlsxInfo> findByFilename(String filename) {
         return xlsxInfoRepository.findByFilename(filename);
     }
 }

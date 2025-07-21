@@ -1,14 +1,13 @@
 package camt.scott2.backend.repository;
 
 import camt.scott2.backend.entity.Mail;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @Repository
-public interface MailRepository extends MongoRepository<Mail, String> {
-    List<Mail> findByFrom(String from);
-    List<Mail> findByRecipientsContaining(String recipient);
-    List<Mail> findBySubjectContaining(String subject);
+public interface MailRepository extends ReactiveMongoRepository<Mail, String> {
+    Flux<Mail> findByFrom(String from);
+    Flux<Mail> findByRecipientsContaining(String recipient);
+    Flux<Mail> findBySubjectContaining(String subject);
 }

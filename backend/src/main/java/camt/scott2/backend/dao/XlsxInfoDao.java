@@ -1,12 +1,11 @@
 package camt.scott2.backend.dao;
 
 import camt.scott2.backend.entity.XlsxInfo;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface XlsxInfoDao extends GenericDao<XlsxInfo, String> {
-    List<XlsxInfo> findByCourseId(String courseId);
-    List<XlsxInfo> findByYearAndSemester(int year, int semester);
-    List<XlsxInfo> findByEmail(String email);
-    List<XlsxInfo> findByFilename(String filename);
+    Flux<XlsxInfo> findByCourseId(String courseId);
+    Flux<XlsxInfo> findByYearAndSemester(int year, int semester);
+    Flux<XlsxInfo> findByEmail(String email);
+    Flux<XlsxInfo> findByFilename(String filename);
 }

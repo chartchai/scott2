@@ -1,15 +1,14 @@
 package camt.scott2.backend.repository;
 
 import camt.scott2.backend.entity.XlsxInfo;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @Repository
-public interface XlsxInfoRepository extends MongoRepository<XlsxInfo, String> {
-    List<XlsxInfo> findByCourseId(String courseId);
-    List<XlsxInfo> findByYearAndSemester(int year, int semester);
-    List<XlsxInfo> findByEmail(String email);
-    List<XlsxInfo> findByFilename(String filename);
+public interface XlsxInfoRepository extends ReactiveMongoRepository<XlsxInfo, String> {
+    Flux<XlsxInfo> findByCourseId(String courseId);
+    Flux<XlsxInfo> findByYearAndSemester(int year, int semester);
+    Flux<XlsxInfo> findByEmail(String email);
+    Flux<XlsxInfo> findByFilename(String filename);
 }
