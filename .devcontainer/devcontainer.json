@@ -22,6 +22,16 @@
         "bradlc.vscode-tailwindcss",
         "ms-vscode.vscode-json"
       ]
+    },
+    "jetbrains": {
+      "backend": "IntelliJ",
+      "plugins": [
+        "com.intellij.java",
+        "org.jetbrains.plugins.vue",
+        "com.intellij.spring",
+        "org.jetbrains.plugins.mongodb",
+        "com.intellij.plugins.html.css.tailwindcss"
+      ]
     }
   },
   "postCreateCommand": "cd frontend && npm install",
