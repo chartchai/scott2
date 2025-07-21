@@ -9,11 +9,15 @@ spring:
       authentication-database: app_db
   application:
     name: backend
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
 
 server:
   port: 8080
 
 logging:
   level:
-    com.example.backend: DEBUG
+    camt.scott2.backend: DEBUG
     org.springframework.data.mongodb: DEBUG

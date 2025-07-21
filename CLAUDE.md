@@ -9,8 +9,8 @@ This is a full-stack application with a separate frontend and backend structure:
 - **Backend**: Spring Boot 3.3.2 application using Java 21, located in `backend/`
   - Uses MongoDB for data persistence
   - REST API exposed at `/api` endpoints
-  - Main application class: `com.example.backend.BackendApplication`
-  - Controllers in `com.example.backend.controller` package
+  - Main application class: `camt.scott2.backend.BackendApplication`
+  - Controllers in `camt.scott2.backend.controller` package
 
 - **Frontend**: Nuxt 3.12.4 application with Vue 3, located in `frontend/`
   - Uses Nuxt UI components library
@@ -58,7 +58,7 @@ docker run -d -p 27017:27017 mongo:7.0
 ### Backend Configuration
 - MongoDB connection configured in `application.yml`
 - Uses environment variables for database host in containerized environments
-- Debug logging enabled for `com.example.backend` and MongoDB
+- Debug logging enabled for `camt.scott2.backend` and MongoDB
 
 ### Frontend Configuration
 - API base URL configured via `API_BASE_URL` environment variable
