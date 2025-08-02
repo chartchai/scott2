@@ -28,8 +28,10 @@ This is a full-stack reactive application with a separate frontend and backend s
 ### Backend (Spring Boot)
 ```bash
 cd backend
-mvn spring-boot:run              # Start development server
-mvn test                         # Run tests (no test files currently exist)
+mvn spring-boot:run              # Start development server (with security)
+SPRING_PROFILES_ACTIVE=local mvn spring-boot:run  # Start with security bypass
+mvn test                         # Run all tests
+mvn test -Dtest=*SecurityTest    # Run security-specific tests
 mvn clean package               # Build JAR
 mvn clean install               # Full build with dependencies
 ```
@@ -144,6 +146,10 @@ cd .devcontainer
 - GraphQL mutations require ROLE_USER minimum
 - Use `@PreAuthorize` annotations on service methods
 - JWT tokens expire after 24 hours, refresh tokens after 7 days
+- **Local Development**: Security bypass available with `local` profile
+  - Set `SPRING_PROFILES_ACTIVE=local` to disable authentication
+  - `LocalSecurityConfig` permits all endpoints when local profile is active
+  - `ReactiveSecurityConfig` uses `@Profile("!local")` for production security
 
 ### Database Patterns
 - All entities extend `BaseEntity` with `id`, `createdAt`, `updatedAt`
@@ -165,11 +171,14 @@ cd .devcontainer
 - Form validation uses Zod schemas
 
 ### Testing Patterns
-- Backend: Use `@WebFluxTest` for controller tests
-- MongoDB: Use `@DataMongoTest` with reactive test containers
-- Frontend: Components tested with Vue Test Utils
-- Integration tests use Docker containers for real MongoDB
-- Mock external services, never real third-party APIs
+- **Test Location**: All tests MUST be placed in `src/test/java/` directory, never in `src/main/java/`
+- **Backend**: Use `@WebFluxTest` for controller tests
+- **MongoDB**: Use `@DataMongoTest` with reactive test containers
+- **Frontend**: Components tested with Vue Test Utils
+- **Integration Tests**: Use Docker containers for real MongoDB
+- **Security Tests**: Use `@ActiveProfiles` for profile-specific testing (local vs production)
+- **Test Configuration**: Create separate `@TestConfiguration` classes in test directory
+- **Mock Services**: Mock external services, never use real third-party APIs
 
 ### Development Standards
 - Use Lombok for entity boilerplate reduction
@@ -265,6 +274,8 @@ npm run test:coverage         # Coverage report
 - Implement Vue component unit tests
 - Set up end-to-end testing scenarios
 - Configure test containers for isolated testing
+- **IMPORTANT**: Place ALL tests in `src/test/java/` directory, never in `src/main/java/`
+- Create profile-specific security tests using `@ActiveProfiles("local")`
 
 **File Focus**: `backend/src/test/**/*`, `frontend/test/**/*`, test configurations
 
